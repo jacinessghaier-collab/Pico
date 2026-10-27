@@ -1,0 +1,41 @@
+{
+  "url": "http://127.0.0.1:8081",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Kushim",
+      "hasCanvas": false,
+      "bodyTextLen": 1305,
+      "bodyTextHash": "fb9c9a98528fea60effeea3506bb8f70a2fd3b96f0b28078619da19899c44178",
+      "bodyTextPrefix": "ASSISTENTENSEITE Kushim Stufe 1 von 10 steht. Nächster Lauf 21:0",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Kushim",
+      "hasCanvas": false,
+      "bodyTextLen": 1305,
+      "bodyTextHash": "fb9c9a98528fea60effeea3506bb8f70a2fd3b96f0b28078619da19899c44178",
+      "bodyTextPrefix": "ASSISTENTENSEITE Kushim Stufe 1 von 10 steht. Nächster Lauf 21:0",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": true,
+  "baselineReasons": [
+    "mobile: title changed (\"Loading http://127.0.0.1:8080/\" -> \"Kushim\")",
+    "mobile: body text replaced (similar length, page start changed)"
+  ]
+}
