@@ -1,7 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Check, Link2, Radio } from "lucide-react";
-import { CHANGES, DONE_STEP, NEXT_RUN_LABEL, NEXT_STEP, STEPS } from "@/lib/kushim-stand";
+import {
+  CHANGES,
+  DONE_STEP,
+  NEXT_RUN_LABEL,
+  NEXT_STEP,
+  STEPS,
+  statusOf,
+} from "@/lib/kushim-stand";
 
 export const Route = createFileRoute("/")({ component: Home });
 
@@ -22,7 +29,7 @@ function Home() {
               Kushim
             </h1>
           </div>
-          <p className="max-w-44 text-right text-sm text-bone/70">
+          <p className="max-w-56 text-right text-sm text-bone/70">
             Stufe {DONE_STEP} von 10 steht. Nächster Lauf {NEXT_RUN_LABEL}.
           </p>
         </header>
@@ -40,9 +47,9 @@ function Home() {
           <figcaption className="relative mt-4 flex items-start justify-between gap-4 text-sm">
             <span className="font-display text-xl leading-tight">{step.title}</span>
             <span className="shrink-0 text-bone/70">
-              {selected === DONE_STEP
+              {statusOf(selected) === "done"
                 ? "Erledigt"
-                : selected === NEXT_STEP
+                : statusOf(selected) === "next"
                   ? "Als Nächstes"
                   : "Offen"}
             </span>
@@ -64,7 +71,7 @@ function Home() {
         </figure>
       </section>
 
-      <aside className="border-bone/15 bg-panel flex flex-col gap-5 border-t px-5 py-6 lg:border-t-0 lg:border-l">
+      <aside className="border-bone/15 bg-panel flex flex-col gap-5 border-t px-5 py-6 lg:max-h-dvh lg:overflow-y-auto lg:border-t-0 lg:border-l">
         <div>
           <p className="text-xs font-medium tracking-widest text-filament uppercase">
             Rechtes Panel
@@ -86,15 +93,16 @@ function Home() {
             </span>
           </div>
           <p className="mt-2 text-sm leading-relaxed text-bone/70">
-            Der Stand springt nicht von allein weiter. Stufe 2 erscheint hier erst,
-            wenn der Lauf um {NEXT_RUN_LABEL} sie wirklich abgeschlossen hat.
+            Der Stand springt nicht von allein weiter. Stufe {NEXT_STEP} wartet auf
+            die Satzmelodie und einen kürzeren ersten Satz. Lippen, Tempo und Pausen
+            stehen schon. Der nächste Stundenschritt ist das Gedächtnis über die
+            letzten Züge hinaus. Stufe 10 prüft danach die Sperre.
           </p>
         </div>
 
         <ol className="space-y-1">
           {STEPS.map((item) => {
-            const state =
-              item.id < NEXT_STEP ? "done" : item.id === NEXT_STEP ? "next" : "wait";
+            const state = statusOf(item.id);
             const active = item.id === selected;
             return (
               <li key={item.id}>
