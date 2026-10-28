@@ -79,12 +79,6 @@ function Home() {
           <h2 className="font-display mt-1 text-2xl leading-tight">Verknüpfung</h2>
         </div>
 
-        <ul className="space-y-2">
-          <LinkRow name="Kushim" note="KI-Assistent" live />
-          <LinkRow name="Trainingsprogramm" note="Zehn Stufen, stündlich eine" live />
-          <LinkRow name="Diese Seite" note="Zeigt Stand und Änderungen" live />
-        </ul>
-
         <div className="bg-ink/70 rounded-card px-4 py-3">
           <div className="flex items-center gap-2 text-sm">
             <Radio className="text-filament size-4" aria-hidden="true" />
@@ -93,10 +87,8 @@ function Home() {
             </span>
           </div>
           <p className="mt-2 text-sm leading-relaxed text-bone/70">
-            Der Stand springt nicht von allein weiter. Stufe {NEXT_STEP} wartet auf
-            die Satzmelodie und einen kürzeren ersten Satz. Lippen, Tempo und Pausen
-            stehen schon. Der nächste Stundenschritt ist das Gedächtnis über die
-            letzten Züge hinaus. Stufe 10 prüft danach die Sperre.
+            Stufe {NEXT_STEP} wartet auf Satzmelodie und einen kürzeren ersten Satz.
+            Lippen, Tempo und Pausen stehen. Danach das Gedächtnis, dann der Lock-Check.
           </p>
         </div>
 
@@ -142,6 +134,12 @@ function Home() {
             );
           })}
         </ol>
+
+        <ul className="space-y-2">
+          <LinkRow name="Kushim" note="KI-Assistent" live />
+          <LinkRow name="Trainingsprogramm" note="Zehn Stufen, stündlich eine" live />
+          <LinkRow name="Diese Seite" note="Zeigt Stand und Änderungen" live />
+        </ul>
 
         <div>
           <h3 className="text-xs font-medium tracking-widest text-bone/55 uppercase">
