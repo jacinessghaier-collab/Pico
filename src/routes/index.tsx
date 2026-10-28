@@ -30,7 +30,7 @@ function Home() {
             </h1>
           </div>
           <p className="max-w-56 text-right text-sm text-bone/70">
-            Stufe {DONE_STEP} von 10 steht. Nächster Lauf {NEXT_RUN_LABEL}.
+            Stufe {DONE_STEP} steht. Nächster Lauf {NEXT_RUN_LABEL}.
           </p>
         </header>
 
@@ -83,12 +83,12 @@ function Home() {
           <div className="flex items-center gap-2 text-sm">
             <Radio className="text-filament size-4" aria-hidden="true" />
             <span>
-              Jetzt bei Stufe {DONE_STEP}. Als Nächstes Stufe {NEXT_STEP}.
+              Stufe {DONE_STEP} steht. Als Nächstes Stufe {NEXT_STEP}.
             </span>
           </div>
           <p className="mt-2 text-sm leading-relaxed text-bone/70">
-            Stufe {NEXT_STEP} wartet auf Satzmelodie und einen kürzeren ersten Satz.
-            Lippen, Tempo und Pausen stehen. Danach das Gedächtnis, dann der Lock-Check.
+            Die Sperre ist geprüft, das Gedächtnis liegt schon. Stufe {NEXT_STEP} wartet
+            auf einen kürzeren ersten Satz. Die Satzmelodie bleibt ausgesetzt.
           </p>
         </div>
 

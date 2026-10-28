@@ -57,12 +57,14 @@ export const STEPS: Step[] = [
   {
     id: 9,
     title: "Sprache",
-    detail: "Tempo, Pausen und Lippen stehen. Satzmelodie und ein kürzerer erster Satz fehlen noch.",
+    detail:
+      "Tempo, Pausen und Lippen stehen. Die Satzmelodie bleibt ausgesetzt. Ein kürzerer erster Satz ist der nächste Lauf.",
   },
   {
     id: 10,
     title: "Stabilitätscheck",
-    detail: "Die schwächste Stelle benennen und nur die reparieren. Die Sperre ist der Prüfpunkt, der Lauf ist offen.",
+    detail:
+      "Die Sperre ist geprüft und bleibt unverändert. Ein Bruch an Form, Farbe oder Kamera wird laut. Keine Reparatur an der Erscheinung.",
   },
 ];
 
@@ -144,14 +146,35 @@ export const CHANGES: Change[] = [
     time: "03:13",
     step: 9,
     title: "Lippen, Tempo, Pausen",
-    body: "Viseme aa, ih, ou, ee und oh auf dem vorhandenen Mund. Leo über die Frequenzbänder, sonst der Texttakt. Sprechrate, Satzpause und das Einatmen davor folgen der Trainingsstunde. Satzmelodie und ein kürzerer erster Satz fehlen noch.",
+    body: "Viseme aa, ih, ou, ee und oh auf dem vorhandenen Mund. Leo über die Frequenzbänder, sonst der Texttakt. Sprechrate, Satzpause und das Einatmen davor folgen der Trainingsstunde. Die Satzmelodie bleibt ausgesetzt. Ein kürzerer erster Satz ist noch offen.",
+    source: "Laufende App",
+  },
+  {
+    id: "memory",
+    time: "04:44",
+    step: null,
+    title: "Gedächtnis über die letzten Züge",
+    body: "Neben dem Namen bleiben Wohnort, Herkunft, Arbeit, Sprache, was jemand mag oder nicht mag, eine Bezugsperson und ein ausdrückliches „Merk dir“. Züge außerhalb des Fensters werden zu einem Thema und höchstens fünf ältere Zeilen. Das kommt einmal in den Systemtext, höchstens 420 Zeichen, ohne Aufzählung und ohne etwas dazuzuerfinden. Das war der Stundenschritt, keine eigene Stufe.",
+    source: "Laufende App",
+  },
+  {
+    id: "lock-check",
+    time: "04:48",
+    step: 10,
+    title: "Sperre geprüft",
+    body: "Farben und Proportionen sind eingefroren, eine Zuweisung wirft. Beim Bau und etwa alle zwei Sekunden prüft der Check die Figur: eine rote Stelle nur an der rechten Schulter, Knochenlängen aus der Sperre, Filament nur zwischen 0,86 und 1, Atem und Schulterpuls im bisherigen Rahmen, der Raum deckend ohne Tone-Mapping, Kamera frontal mit Blickfeld 26. Ein Bruch wirft, die Ansicht zeigt den Text. Gesten, Gespräch und Gedächtnis bleiben unangetastet.",
     source: "Laufende App",
   },
 ];
 
-export const DONE_STEP = 8;
+/**
+ * Steps 1–8 and the lock check (10) are in the live app.
+ * Step 9 stays next: melody is deferred, the shorter first sentence is not in yet.
+ * statusOf checks NEXT_STEP before the done range, so 9 is not marked done.
+ */
+export const DONE_STEP = 10;
 export const NEXT_STEP = 9;
-export const NEXT_RUN_LABEL = "Satzmelodie";
+export const NEXT_RUN_LABEL = "kürzerer erster Satz";
 
 export function statusOf(id: number): "done" | "next" | "open" {
   if (id === NEXT_STEP) return "next";
