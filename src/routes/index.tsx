@@ -4,6 +4,7 @@ import { Check, Link2, Radio } from "lucide-react";
 import {
   CHANGES,
   DONE_STEP,
+  HOURLY_NEXT,
   NEXT_RUN_LABEL,
   NEXT_RUN_NOTE,
   NEXT_STEP,
@@ -32,7 +33,7 @@ function Home() {
           </div>
           <p className="max-w-56 text-right text-sm text-bone/70">
             {NEXT_STEP === null
-              ? `Zehn Stufen stehen. Nächster Lauf: ${NEXT_RUN_LABEL}.`
+              ? `Zehn Stufen stehen. Nächster Lauf: Stunde ${HOURLY_NEXT}, ${NEXT_RUN_LABEL}.`
               : `Stufe ${DONE_STEP} steht. Nächster Lauf ${NEXT_RUN_LABEL}.`}
           </p>
         </header>

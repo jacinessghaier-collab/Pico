@@ -213,29 +213,60 @@ export const CHANGES: Change[] = [
     body: "Die Sperre ist in Stunde 8 erneut gelesen. Dieselbe Prüfung wirft weiter. Zusätzlich fallen ein ausgetauschter Shader oder eine andere Geometrie, ein umgehängtes oder ausgeblendetes Teil, eine seitliche oder kopfüber stehende Kamera und ein Raum, der den Void zudeckt. Die Vergleichstabelle ist eingefroren. Die Figur und lock.ts sind unverändert. Die Pause bleibt 320 Millisekunden. Das war der Stundenschritt, keine eigene Stufe. Die Satzmelodie bleibt ausgesetzt.",
     source: "Laufende App",
   },
+  {
+    id: "stability-read",
+    time: "09:00",
+    step: null,
+    title: "Stabilitätscheck",
+    body: "Die Sperre ist in Stunde 9 erneut gelesen. Dieselbe Prüfung, auf dem Takt von zwei Sekunden, über die Trainingsstunden 0 bis 8, danach zwanzig Sekunden auf Stunde 8 und ein Durchgang mit reduzierter Bewegung. Sie bleibt grün. Kein zweiter Check, kein Post-Pass, kein visueller Eingriff. Die Knoten der Figur bleiben, der Raum behält nur die Figur, die Palette bleibt eingefroren. Die Figur und lock.ts sind unverändert. Die Pause bleibt 320 Millisekunden. Mund in der Ruhe, die Antwortform shapeReply und das erneute Lesen in Stunde 8 stehen schon. Das war der Stundenschritt, keine eigene Stufe. Die Satzmelodie bleibt ausgesetzt.",
+    source: "Laufende App",
+  },
+  {
+    id: "reply-form-name",
+    time: "09:10",
+    step: null,
+    title: "Name an der Wortgrenze",
+    body: "Ohne vorherige Zeile streicht die Reparatur die Entschuldigung und kürzt, ohne Ersatzsatz. Der Name gilt nur als ganzes Wort: Jacin bleibt in Jacinta stehen. Offen bleiben drei: Namen nicht erfragen, Abbruch an der Historie, die nächste Regel in derselben Funktion. Die Antwortform shapeReply steht schon. Aussehen, Sperre und die Pause von 320 Millisekunden bleiben unberührt. Das ist keine eigene Stufe. Die Satzmelodie bleibt ausgesetzt.",
+    source: "Laufende App",
+  },
+  {
+    id: "viseme-clock",
+    time: "09:20",
+    step: null,
+    title: "Visem am Texttakt",
+    body: "Nach der geschätzten Dauer liegt der Mund in derselben Ruhe wie im Leerlauf, auch wenn onend später kommt. Gemessen an da: die letzte Form aa blieb sonst offen. Kein Ausblenden, keine zweite Uhr. Die Schätzung darf kürzer sein als die Stimme. Mund in der Ruhe steht schon, das ist nicht dieser Schritt. Die Pause bleibt 320 Millisekunden. Das ist keine eigene Stufe. Die Satzmelodie bleibt ausgesetzt.",
+    source: "Laufende App",
+  },
 ];
 
 /**
- * Steps 1–10 stay done. Idle mouth, gaze, frame time, and the 320 ms pause
- * stay as already recorded. shapeReply is the one reply-form path, before
- * display and voice; appearance, the lock, and the pause are untouched there.
- * The lock re-read is hourly step 8, not an eleventh stage: the same check
- * still throws, and it also fails on a swapped shader or geometry, a
- * reparented or hidden part, a yawed or upside-down camera, and a scene that
- * covers the void. The comparison table is frozen. The figure and lock.ts
- * are unchanged. Sentence melody stays deferred.
- * NEXT_STEP is null. Hour 9 at 09:00 is the next pipeline run, the
- * Stabilitätscheck (pico2 HOURLY_NEXT is 9 and NEXT_RUN_LABEL is 09:00).
- * This page does not mark that hour done.
+ * Steps 1–10 stay done. There is no eleventh stage. pico2's build marker
+ * stays at stage 9 of 10; this page does not reopen a stage for the hourly
+ * pipeline.
+ * Idle mouth, shapeReply, and the hour-8 lock re-read stay as already
+ * recorded. The name now matches a whole word on that same path: Jacin stays
+ * inside Jacinta. A repair with no previous line still strips the apology
+ * and shortens, with no canned sentence. Three reply rules stay open.
+ * The last viseme rests when the text clock ends, even if onend is later.
+ * That is not the idle-mouth hour. No fade, no second clock. The estimate
+ * may be shorter than the voice.
+ * Hour 9 is the Stabilitätscheck: the same lock check, on a two-second
+ * cadence, across training hours 0–8, then twenty seconds on hour 8 and one
+ * reduced-motion pass. It stays green. No second checker, no post-pass, no
+ * visual change. The figure and lock.ts are unchanged. The 320 ms pause
+ * stays. Sentence melody stays deferred.
+ * NEXT_STEP is null. Hour 10 at 10:00 is the next pipeline run (pico2
+ * HOURLY_DONE is 9, HOURLY_NEXT is 10, NEXT_RUN_LABEL is 10:00). This page
+ * does not mark that hour done.
  * statusOf checks NEXT_STEP first, so a later open number is not marked done.
  */
 export const DONE_STEP = 10;
 export const NEXT_STEP: number | null = null;
-export const HOURLY_DONE = 8;
-export const HOURLY_NEXT = 9;
-export const NEXT_RUN_HOUR = "09:00";
-export const NEXT_RUN_LABEL = "Stabilitätscheck";
-export const NEXT_RUN_NOTE = `Die Sperre ist in Stunde ${HOURLY_DONE} erneut gelesen. Dieselbe Prüfung wirft weiter. Zusätzlich fallen ein ausgetauschter Shader oder eine andere Geometrie, ein umgehängtes oder ausgeblendetes Teil, eine seitliche oder kopfüber stehende Kamera und ein Raum, der den Void zudeckt. Die Figur und lock.ts sind unverändert. Die Pause bleibt 320 Millisekunden. Die Antwortform hat einen Pfad: shapeReply, einmal vor Anzeige und Stimme. Aussehen, Sperre und diese Pause bleiben dort unberührt. Die zehn Stufen bleiben erledigt. Die Satzmelodie bleibt ausgesetzt. Stunde ${HOURLY_NEXT}, ${NEXT_RUN_HOUR}, ist der Stabilitätscheck. Das ist noch nicht gelaufen.`;
+export const HOURLY_DONE = 9;
+export const HOURLY_NEXT = 10;
+export const NEXT_RUN_HOUR = "10:00";
+export const NEXT_RUN_LABEL = "10:00";
+export const NEXT_RUN_NOTE = `Der Stabilitätscheck ist in Stunde ${HOURLY_DONE}, 09:00, gelaufen. Dieselbe Prüfung liest die Sperre auf dem Takt von zwei Sekunden über die Trainingsstunden und bleibt grün. Kein zweiter Check, kein Post-Pass, kein visueller Eingriff. Die Figur und lock.ts sind unverändert. Die Pause bleibt 320 Millisekunden. Mund in der Ruhe, die Antwortform shapeReply und das erneute Lesen der Sperre in Stunde 8 stehen schon. Der Name gilt nur als ganzes Wort. Der letzte Visem liegt nach dem Texttakt in derselben Ruhe. Die zehn Stufen bleiben erledigt. Die Satzmelodie bleibt ausgesetzt. Stunde ${HOURLY_NEXT}, ${NEXT_RUN_HOUR}, ist der nächste Lauf. Das ist noch nicht gelaufen.`;
 
 export function statusOf(id: number): "done" | "next" | "open" {
   if (NEXT_STEP !== null && id === NEXT_STEP) return "next";
