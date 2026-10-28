@@ -3,6 +3,9 @@ import { describe, it } from "node:test";
 import {
   CHANGES,
   DONE_STEP,
+  HOURLY_DONE,
+  HOURLY_NEXT,
+  NEXT_RUN_HOUR,
   NEXT_RUN_LABEL,
   NEXT_RUN_NOTE,
   NEXT_STEP,
@@ -10,7 +13,7 @@ import {
   statusOf,
 } from "./kushim-stand.ts";
 
-describe("kushim stand after mouth opening against breath", () => {
+describe("kushim stand after the idle mouth", () => {
   it("keeps ten steps and marks every one done", () => {
     assert.deepEqual(
       STEPS.map((step) => step.id),
@@ -80,15 +83,50 @@ describe("kushim stand after mouth opening against breath", () => {
     );
   });
 
-  it("names frame time as the next run and keeps the pause optional", () => {
-    assert.match(NEXT_RUN_LABEL, /Bildzeit der laufenden Szene/);
-    assert.doesNotMatch(NEXT_RUN_LABEL, /Mundöffnung|Pause/);
-    assert.match(NEXT_RUN_NOTE, /Der nächste Lauf ist die Bildzeit der laufenden Szene/);
-    assert.match(NEXT_RUN_NOTE, /320 Millisekunden/);
-    assert.match(NEXT_RUN_NOTE, /nur geändert, wenn sie falsch liegt/);
-    assert.match(NEXT_RUN_NOTE, /Satzmelodie bleibt ausgesetzt/);
+  it("records frame time as a finished hourly step, not a new stage", () => {
+    const landed = CHANGES.find((change) => change.id === "frame-time");
+    assert.ok(landed);
+    assert.equal(landed.step, null);
+    assert.equal(landed.time, "07:00");
+    assert.match(landed.title, /^Bildzeit$/);
+    assert.match(landed.body, /60 Frames/);
+    assert.match(landed.body, /320 Millisekunden/);
+    assert.match(landed.body, /keine eigene Stufe/);
+    assert.match(landed.body, /Satzmelodie bleibt ausgesetzt/);
+  });
+
+  it("records the idle mouth as a finished hourly step, not a new stage", () => {
+    const landed = CHANGES.find((change) => change.id === "mouth-rest");
+    assert.ok(landed);
+    assert.equal(landed.step, null);
+    assert.equal(landed.time, "08:00");
+    assert.match(landed.title, /Mund in der Ruhe/);
+    assert.match(landed.body, /Sprechbus/);
+    assert.match(landed.body, /Skala 1/);
+    assert.match(landed.body, /Pause nach dem ersten Satz/);
+    assert.match(landed.body, /\[pause\]/);
+    assert.match(landed.body, /320 Millisekunden/);
+    assert.match(landed.body, /Blick, Sperre und Bildzeit/);
+    assert.match(landed.body, /keine eigene Stufe/);
+    assert.match(landed.body, /Satzmelodie bleibt ausgesetzt/);
+    assert.doesNotMatch(landed.body, /Lock-Check nur lesen|shapeReply/);
     assert.equal(
-      CHANGES.some((change) => /Bildzeit/.test(change.title)),
+      STEPS.some((step) => /Mund in der Ruhe/.test(step.title)),
+      false,
+    );
+  });
+
+  it("keeps the lock-check read as the next hour", () => {
+    assert.equal(HOURLY_DONE, 8);
+    assert.equal(HOURLY_NEXT, 9);
+    assert.equal(NEXT_RUN_HOUR, "09:00");
+    assert.equal(NEXT_RUN_LABEL, "Lock-Check nur lesen");
+    assert.match(NEXT_RUN_NOTE, /Stunde 9, 09:00, liest den Lock-Check nur/);
+    assert.match(NEXT_RUN_NOTE, /noch nicht gelaufen/);
+    assert.match(NEXT_RUN_NOTE, /Satzmelodie bleibt ausgesetzt/);
+    assert.doesNotMatch(NEXT_RUN_NOTE, /shapeReply/);
+    assert.equal(
+      CHANGES.some((change) => change.time === "09:00" || /shapeReply/.test(change.body)),
       false,
     );
   });

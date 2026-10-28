@@ -189,25 +189,36 @@ export const CHANGES: Change[] = [
     body: "Die laufende Szene misst die Bildzeit vor der 50-ms-Klemme der Bewegung. Der Schalter „Bildzeit“ steht unter der Kopfzeile, aus ist der Normalzustand. Er zeigt das Mittel über 60 Frames, die Bilder pro Sekunde und die Spitze. Die Zeile liegt im DOM. Kein Bloom, keine zweite Aura, kein neues Material. Die Sperre bleibt unberührt. Die erste Pause bleibt 320 Millisekunden. Die Satzmelodie bleibt ausgesetzt. Das war der Stundenschritt, keine eigene Stufe.",
     source: "Laufende App",
   },
+  {
+    id: "mouth-rest",
+    time: "08:00",
+    step: null,
+    title: "Mund in der Ruhe",
+    body: "Liegt der Sprechbus still, bleibt die Lippe auf Skala 1 und der Kiefer auf der Ruhe, Frame für Frame gleich, auch länger als die erste Pause. Das gilt in der Pause nach dem ersten Satz: der Bus ist still, die Pose darf noch sprechen, und die alten Viseme-Rahmen spielen nicht noch einmal. Die nächste Zeile öffnet den Mund wieder. Ein Abbruch setzt die Ruhe. Bei Leo hält [pause] den Bus aktiv; die Länge steht nicht in den Samples, deshalb kein geratenes Schweigen. Blick, Sperre und Bildzeit bleiben unangetastet. Die Pause bleibt 320 Millisekunden. Die Form ist nicht nachgezogen. Gemessen. Das war der Stundenschritt, keine eigene Stufe. Die Satzmelodie bleibt ausgesetzt.",
+    source: "Laufende App",
+  },
 ];
 
 /**
- * Steps 1–10 stay done. The shorter first sentence and mouth-against-breath
- * are in. Bildzeit is hourly step 7, not an eleventh stage: the toggle under
- * the header is off by default and shows the 60-frame mean, frames per second,
- * and the peak, in the DOM only. No bloom, second aura, or new material. The
- * lock and the 320 ms pause stay. Sentence melody stays deferred.
- * NEXT_STEP is null. The next run is hour 8 at 08:00 and only reads the lock
- * check. This page does not mark that read done.
+ * Steps 1–10 stay done. Mouth-against-breath and Bildzeit stay in.
+ * Idle mouth is hourly step 8, not an eleventh stage: while the speech bus
+ * is idle the lip stays at scale 1 and the jaw stays at rest, including the
+ * pause after the first sentence and while the speak pose is still set.
+ * Stale viseme frames are not replayed. Look, the lock, frame time, and the
+ * 320 ms pause are untouched. The shape was not retuned. Sentence melody
+ * stays deferred.
+ * NEXT_STEP is null. The next run is hour 9 at 09:00 and only reads the lock
+ * check. This page does not mark that read done, and it does not mark a
+ * shapeReply pass done.
  * statusOf checks NEXT_STEP first, so a later open number is not marked done.
  */
 export const DONE_STEP = 10;
 export const NEXT_STEP: number | null = null;
-export const HOURLY_DONE = 7;
-export const HOURLY_NEXT = 8;
-export const NEXT_RUN_HOUR = "08:00";
+export const HOURLY_DONE = 8;
+export const HOURLY_NEXT = 9;
+export const NEXT_RUN_HOUR = "09:00";
 export const NEXT_RUN_LABEL = "Lock-Check nur lesen";
-export const NEXT_RUN_NOTE = `Bildzeit, Stunde ${HOURLY_DONE}, ist gemessen. Der Schalter steht unter der Kopfzeile und ist aus dem Normalzustand. Er zeigt das Mittel über 60 Frames, die Bilder pro Sekunde und die Spitze. Die Zeile liegt im DOM. Kein Bloom, keine zweite Aura, kein neues Material. Die Sperre bleibt unberührt. Die Pause bleibt 320 Millisekunden. Die Satzmelodie bleibt ausgesetzt. Stunde ${HOURLY_NEXT}, ${NEXT_RUN_HOUR}, liest den Lock-Check nur. Das ist noch nicht gelaufen.`;
+export const NEXT_RUN_NOTE = `Mund in der Ruhe, Stunde ${HOURLY_DONE}, steht. Solange der Sprechbus still ist, bleibt die Lippe auf Skala 1 und der Kiefer auf der Ruhe, auch in der Pause nach dem ersten Satz und während die Pose noch spricht. Blick, Sperre und Bildzeit bleiben unangetastet. Die Pause bleibt 320 Millisekunden. Die Satzmelodie bleibt ausgesetzt. Stunde ${HOURLY_NEXT}, ${NEXT_RUN_HOUR}, liest den Lock-Check nur. Das ist noch nicht gelaufen.`;
 
 export function statusOf(id: number): "done" | "next" | "open" {
   if (NEXT_STEP !== null && id === NEXT_STEP) return "next";
