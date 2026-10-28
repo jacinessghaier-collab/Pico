@@ -17,52 +17,52 @@ export const STEPS: Step[] = [
   {
     id: 1,
     title: "Proportionen und Silhouette",
-    detail: "Erwachsener Mensch, etwa 7,5 bis 8 Kopflängen. Keine neue Form.",
+    detail: "Erwachsener Mensch, acht Kopflängen. Die Form liegt in der Sperre.",
   },
   {
     id: 2,
     title: "Gelenke, Gewicht, Atmung",
-    detail: "Standbein, Gelenke und ein ruhiger Atemzug. Noch nicht gelaufen.",
+    detail: "Stand mittig, Gelenke gedämpft, Atem im Brustkorb. Kein Gang.",
   },
   {
     id: 3,
     title: "Durchsichtiges Material",
-    detail: "Glas mit Transmission, keine milchige Hülle.",
+    detail: "Klares Fresnel-Glas. Schwarz scheint durch, keine milchige Hülle.",
   },
   {
     id: 4,
     title: "Stromflüsse und Helligkeit",
-    detail: "Filamente folgen Sprache und Aufmerksamkeit.",
+    detail: "Filamente folgen den Gliedern. Die Dichte steigt mit der Trainingsstunde.",
   },
   {
     id: 5,
     title: "Aura",
-    detail: "Reagiert beim Sprechen, bleibt im Idle ruhig.",
+    detail: "Die Fresnel-Hülle ist die Aura. Keine zweite Schale über der Silhouette.",
   },
   {
     id: 6,
     title: "Idle und Mikrogesten",
-    detail: "Blinzeln, Blick, Gewichtsverlagerung.",
+    detail: "Beide Augen blinzeln gemeinsam. Der Blick folgt leicht. Das Gewicht bleibt mittig.",
   },
   {
     id: 7,
     title: "Gesprächsgesten",
-    detail: "Nur auf Betonung, nicht auf jede Silbe.",
+    detail: "Idle, zuhören, denken, sprechen, erklären, nicken, mitfühlen. Nicht auf jede Silbe.",
   },
   {
     id: 8,
     title: "Gesprächsverhalten",
-    detail: "Zuhören, kurze Pause oder eine Rückfrage. Nicht mehr Text.",
+    detail: "Name einmal, Abbruch, Rückfrage nur bei offenem Satz, Reparatur ohne Entschuldigung.",
   },
   {
     id: 9,
     title: "Sprache",
-    detail: "Tempo, Pausen, Satzmelodie, kürzerer erster Satz.",
+    detail: "Tempo, Pausen und Lippen stehen. Satzmelodie und ein kürzerer erster Satz fehlen noch.",
   },
   {
     id: 10,
     title: "Stabilitätscheck",
-    detail: "Die schwächste Stelle benennen und nur die reparieren.",
+    detail: "Die schwächste Stelle benennen und nur die reparieren. Die Sperre ist der Prüfpunkt, der Lauf ist offen.",
   },
 ];
 
@@ -80,11 +80,81 @@ export const CHANGES: Change[] = [
     time: "20:22",
     step: null,
     title: "Grok-Stimme und Schulter-Nicken",
-    body: "Ein früherer Lauf, der noch unter der alten Sammelanweisung startete, hat danach Stimme und ein Schulter-Nicken nachgereicht. Das ist keine Stufe 2.",
+    body: "Ein früherer Lauf hat Stimme und ein Schulter-Nicken nachgereicht. Das war noch keine Stufe 2. Beides liegt inzwischen in den späteren Stufen.",
     source: "Überlappender Lauf",
+  },
+  {
+    id: "stance",
+    time: "27.10.",
+    step: 2,
+    title: "Atem und Gelenke",
+    body: "Schulter, Ellbogen, Handgelenk und Finger sind gedämpft. Der Atem sitzt im Brustkorb, das Gewicht mittig. Er geht nicht.",
+    source: "Laufende App",
+  },
+  {
+    id: "glass",
+    time: "27.10.",
+    step: 3,
+    title: "Klares Glas",
+    body: "Die Hülle ist ein Fresnel-Glas. Schwarz scheint durch. Keine milchige zweite Haut.",
+    source: "Laufende App",
+  },
+  {
+    id: "filaments",
+    time: "27.10.",
+    step: 4,
+    title: "Ströme und Schulter",
+    body: "Filamente laufen vom Brustkern in Kopf, Rumpf, Arme und Beine. Die Dichte folgt der Trainingsstunde. Das rote Signal sitzt nur an der rechten Schulter und wird heller, wenn sie Thema ist.",
+    source: "Laufende App",
+  },
+  {
+    id: "aura",
+    time: "27.10.",
+    step: 5,
+    title: "Aura ist die Hülle",
+    body: "Die Fresnel-Hülle bleibt die Aura und schwingt im Idle nicht mit. Eine zweite Schale über der Silhouette gibt es nicht.",
+    source: "Laufende App",
+  },
+  {
+    id: "gestures",
+    time: "27.10.",
+    step: 7,
+    title: "Gesten in der Szene",
+    body: "Idle, zuhören, denken, sprechen, erklären, nicken und mitfühlen liegen in der laufenden Szene. emphasis aus dem Modell wird als Erklären gelesen. Nicht eine Geste pro Silbe.",
+    source: "Laufende App",
+  },
+  {
+    id: "idle",
+    time: "03:13",
+    step: 6,
+    title: "Blinzeln und Blick",
+    body: "Beide Augen blinzeln gemeinsam, Abstand 3,6 bis 6,4 Sekunden, Schließdauer 0,12 Sekunden, ohne Kopplung an die Silbe. Der Blick folgt leicht. Das Gewicht bleibt mittig.",
+    source: "Laufende App",
+  },
+  {
+    id: "talk",
+    time: "03:13",
+    step: 8,
+    title: "Gesprächsregeln",
+    body: "Der Name fällt höchstens einmal und wird nie abgefragt. Eine Unterbrechung bricht den gesprochenen Satz ab, die nächste Antwort gilt dem neuen Thema. Eine Rückfrage nur bei einem offenen Satz. Bei Nicht-Verstanden derselbe Inhalt in einem Satz, ohne Entschuldigung.",
+    source: "Laufende App",
+  },
+  {
+    id: "lipsync",
+    time: "03:13",
+    step: 9,
+    title: "Lippen, Tempo, Pausen",
+    body: "Viseme aa, ih, ou, ee und oh auf dem vorhandenen Mund. Leo über die Frequenzbänder, sonst der Texttakt. Sprechrate, Satzpause und das Einatmen davor folgen der Trainingsstunde. Satzmelodie und ein kürzerer erster Satz fehlen noch.",
+    source: "Laufende App",
   },
 ];
 
-export const DONE_STEP = 1;
-export const NEXT_STEP = 2;
-export const NEXT_RUN_LABEL = "21:00";
+export const DONE_STEP = 8;
+export const NEXT_STEP = 9;
+export const NEXT_RUN_LABEL = "Satzmelodie";
+
+export function statusOf(id: number): "done" | "next" | "open" {
+  if (id === NEXT_STEP) return "next";
+  if (id <= DONE_STEP) return "done";
+  return "open";
+}
