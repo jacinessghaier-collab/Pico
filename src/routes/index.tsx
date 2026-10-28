@@ -5,6 +5,7 @@ import {
   CHANGES,
   DONE_STEP,
   NEXT_RUN_LABEL,
+  NEXT_RUN_NOTE,
   NEXT_STEP,
   STEPS,
   statusOf,
@@ -92,7 +93,7 @@ function Home() {
           </div>
           <p className="mt-2 text-sm leading-relaxed text-bone/70">
             {NEXT_STEP === null
-              ? "Der kürzere erste Satz steht: höchstens acht Wörter, danach 320 Millisekunden, bei Leo einmal [pause]. Die Sperre war schon geprüft. Die Satzmelodie bleibt ausgesetzt. Als Nächstes die Mundöffnung gegen den Atem, nur über die Viseme-Stärke. Das ist der Stundenschritt, keine neue Stufe."
+              ? NEXT_RUN_NOTE
               : `Die Sperre ist geprüft. Stufe ${NEXT_STEP} ist der nächste Lauf. Die Satzmelodie bleibt ausgesetzt.`}
           </p>
         </div>

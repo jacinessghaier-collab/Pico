@@ -1,8 +1,16 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { CHANGES, DONE_STEP, NEXT_RUN_LABEL, NEXT_STEP, STEPS, statusOf } from "./kushim-stand.ts";
+import {
+  CHANGES,
+  DONE_STEP,
+  NEXT_RUN_LABEL,
+  NEXT_RUN_NOTE,
+  NEXT_STEP,
+  STEPS,
+  statusOf,
+} from "./kushim-stand.ts";
 
-describe("kushim stand after the shorter first sentence", () => {
+describe("kushim stand after mouth opening against breath", () => {
   it("keeps ten steps and marks every one done", () => {
     assert.deepEqual(
       STEPS.map((step) => step.id),
@@ -47,7 +55,41 @@ describe("kushim stand after the shorter first sentence", () => {
       STEPS.some((step) => step.id > 10),
       false,
     );
-    assert.match(NEXT_RUN_LABEL, /Mundöffnung gegen den Atem/);
     assert.equal(STEPS.find((step) => step.id === 10)?.title, "Stabilitätscheck");
+  });
+
+  it("records mouth against breath as a finished hourly step, not a new stage", () => {
+    const landed = CHANGES.find((change) => change.id === "mouth-breath");
+    assert.ok(landed);
+    assert.equal(landed.step, null);
+    assert.equal(landed.time, "06:00");
+    assert.match(landed.body, /0,35/);
+    assert.match(landed.body, /sechs Prozent/);
+    assert.match(landed.body, /Sinus auf aa ist weg/);
+    assert.match(landed.body, /Brustskala/);
+    assert.match(landed.body, /1,35/);
+    assert.match(landed.body, /0,55/);
+    assert.match(landed.body, /0,85/);
+    assert.match(landed.body, /Sperre und Sperr-Check sind unverändert/);
+    assert.match(landed.body, /keine eigene Stufe/);
+    assert.match(landed.body, /Satzmelodie bleibt ausgesetzt/);
+    assert.doesNotMatch(landed.title, /Stufe 11|elfte Stufe/);
+    assert.equal(
+      STEPS.some((step) => /Mundöffnung/.test(step.title)),
+      false,
+    );
+  });
+
+  it("names frame time as the next run and keeps the pause optional", () => {
+    assert.match(NEXT_RUN_LABEL, /Bildzeit der laufenden Szene/);
+    assert.doesNotMatch(NEXT_RUN_LABEL, /Mundöffnung|Pause/);
+    assert.match(NEXT_RUN_NOTE, /Der nächste Lauf ist die Bildzeit der laufenden Szene/);
+    assert.match(NEXT_RUN_NOTE, /320 Millisekunden/);
+    assert.match(NEXT_RUN_NOTE, /nur geändert, wenn sie falsch liegt/);
+    assert.match(NEXT_RUN_NOTE, /Satzmelodie bleibt ausgesetzt/);
+    assert.equal(
+      CHANGES.some((change) => /Bildzeit/.test(change.title)),
+      false,
+    );
   });
 });

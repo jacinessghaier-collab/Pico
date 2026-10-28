@@ -173,19 +173,32 @@ export const CHANGES: Change[] = [
     body: "Der erste Satz bleibt innerhalb von acht Wörtern und ist kürzer als der zweite. Wörter rücken nach vorn, nichts wird gestrichen. Eine Antwort aus einem Satz bleibt ein Satz. Danach genau eine Pause: im Browser 320 Millisekunden, bei Leo einmal [pause]. Im Chat steht kein Pausen-Zeichen. Die Satzmelodie bleibt ausgesetzt. Figur und Sperre sind unverändert.",
     source: "Laufende App",
   },
+  {
+    id: "mouth-breath",
+    time: "06:00",
+    step: null,
+    title: "Mundöffnung gegen den Atem",
+    body: "Die Lautstärke setzt die Viseme-Stärke, von der Schwelle 0,35 bis 1. Das Einatmen nimmt sechs Prozent weg, das Ausatmen bleibt bei der Lautstärke. Der eigene Sinus auf aa ist weg. Geteilt wird die Öffnung durch die Brustskala, die ruhende Lippe bleibt bei 1. Die Skala kommt aus dem Atem der Sperre. Brusttempo bleibt 1,35 beim Sprechen, 0,55 beim Mitfühlen und 0,85 in der Ruhe. Sperre und Sperr-Check sind unverändert. Das war der Stundenschritt, keine eigene Stufe. Die Satzmelodie bleibt ausgesetzt.",
+    source: "Laufende App",
+  },
 ];
 
 /**
- * Steps 1–10 are in the live app. Step 9 includes the shorter first sentence
- * (at most eight words, then 320 ms, or one Leo [pause]). Sentence melody stays
- * deferred and is not marked done. The lock (step 10) was already in.
- * NEXT_STEP is null: the numbered plan is complete. The next pico2 hour is
- * mouth opening against the breath via viseme gain only — not an eleventh step.
+ * Steps 1–10 stay done. The shorter first sentence is in. Mouth opening against
+ * the breath is the finished hourly step, not an eleventh stage: loudness sets
+ * viseme strength, the inhale eases it by 6%, there is no aa sine, and the
+ * opening is divided by the chest scale from the lock's breath. lock.ts and
+ * lock-check.ts are untouched. Sentence melody stays deferred.
+ * NEXT_STEP is null. The next run is frame time of the live scene, and this
+ * page does not mark that done. FIRST_PAUSE_MS moves only if that one pause
+ * is wrong — optional, and not the primary next.
  * statusOf checks NEXT_STEP first, so a later open number is not marked done.
  */
 export const DONE_STEP = 10;
 export const NEXT_STEP: number | null = null;
-export const NEXT_RUN_LABEL = "Mundöffnung gegen den Atem";
+export const NEXT_RUN_LABEL = "Bildzeit der laufenden Szene";
+export const NEXT_RUN_NOTE =
+  "Mundöffnung gegen den Atem steht: die Lautstärke setzt die Viseme-Stärke, das Einatmen nimmt sechs Prozent weg, der Sinus auf aa ist weg, die Öffnung ist durch die Brustskala aus der Sperre geteilt. Sperre und Sperr-Check sind unverändert. Die Satzmelodie bleibt ausgesetzt. Der nächste Lauf ist die Bildzeit der laufenden Szene. Die eine Pause bleibt bei 320 Millisekunden und wird nur geändert, wenn sie falsch liegt.";
 
 export function statusOf(id: number): "done" | "next" | "open" {
   if (NEXT_STEP !== null && id === NEXT_STEP) return "next";
