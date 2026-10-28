@@ -58,7 +58,7 @@ export const STEPS: Step[] = [
     id: 9,
     title: "Sprache",
     detail:
-      "Tempo, Pausen und Lippen stehen. Die Satzmelodie bleibt ausgesetzt. Ein kürzerer erster Satz ist der nächste Lauf.",
+      "Tempo, Pausen und Lippen stehen. Der erste Satz hat höchstens acht Wörter und ist kürzer als der zweite, danach 320 Millisekunden, bei Leo einmal [pause]. Die Satzmelodie bleibt ausgesetzt.",
   },
   {
     id: 10,
@@ -146,7 +146,7 @@ export const CHANGES: Change[] = [
     time: "03:13",
     step: 9,
     title: "Lippen, Tempo, Pausen",
-    body: "Viseme aa, ih, ou, ee und oh auf dem vorhandenen Mund. Leo über die Frequenzbänder, sonst der Texttakt. Sprechrate, Satzpause und das Einatmen davor folgen der Trainingsstunde. Die Satzmelodie bleibt ausgesetzt. Ein kürzerer erster Satz ist noch offen.",
+    body: "Viseme aa, ih, ou, ee und oh auf dem vorhandenen Mund. Leo über die Frequenzbänder, sonst der Texttakt. Sprechrate, Satzpause und das Einatmen davor folgen der Trainingsstunde. Die Satzmelodie bleibt ausgesetzt.",
     source: "Laufende App",
   },
   {
@@ -165,19 +165,30 @@ export const CHANGES: Change[] = [
     body: "Farben und Proportionen sind eingefroren, eine Zuweisung wirft. Beim Bau und etwa alle zwei Sekunden prüft der Check die Figur: eine rote Stelle nur an der rechten Schulter, Knochenlängen aus der Sperre, Filament nur zwischen 0,86 und 1, Atem und Schulterpuls im bisherigen Rahmen, der Raum deckend ohne Tone-Mapping, Kamera frontal mit Blickfeld 26. Ein Bruch wirft, die Ansicht zeigt den Text. Gesten, Gespräch und Gedächtnis bleiben unangetastet.",
     source: "Laufende App",
   },
+  {
+    id: "short-first",
+    time: "05:32",
+    step: 9,
+    title: "Kürzerer erster Satz",
+    body: "Der erste Satz bleibt innerhalb von acht Wörtern und ist kürzer als der zweite. Wörter rücken nach vorn, nichts wird gestrichen. Eine Antwort aus einem Satz bleibt ein Satz. Danach genau eine Pause: im Browser 320 Millisekunden, bei Leo einmal [pause]. Im Chat steht kein Pausen-Zeichen. Die Satzmelodie bleibt ausgesetzt. Figur und Sperre sind unverändert.",
+    source: "Laufende App",
+  },
 ];
 
 /**
- * Steps 1–8 and the lock check (10) are in the live app.
- * Step 9 stays next: melody is deferred, the shorter first sentence is not in yet.
- * statusOf checks NEXT_STEP before the done range, so 9 is not marked done.
+ * Steps 1–10 are in the live app. Step 9 includes the shorter first sentence
+ * (at most eight words, then 320 ms, or one Leo [pause]). Sentence melody stays
+ * deferred and is not marked done. The lock (step 10) was already in.
+ * NEXT_STEP is null: the numbered plan is complete. The next pico2 hour is
+ * mouth opening against the breath via viseme gain only — not an eleventh step.
+ * statusOf checks NEXT_STEP first, so a later open number is not marked done.
  */
 export const DONE_STEP = 10;
-export const NEXT_STEP = 9;
-export const NEXT_RUN_LABEL = "kürzerer erster Satz";
+export const NEXT_STEP: number | null = null;
+export const NEXT_RUN_LABEL = "Mundöffnung gegen den Atem";
 
 export function statusOf(id: number): "done" | "next" | "open" {
-  if (id === NEXT_STEP) return "next";
+  if (NEXT_STEP !== null && id === NEXT_STEP) return "next";
   if (id <= DONE_STEP) return "done";
   return "open";
 }

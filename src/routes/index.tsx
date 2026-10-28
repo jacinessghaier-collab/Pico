@@ -13,7 +13,7 @@ import {
 export const Route = createFileRoute("/")({ component: Home });
 
 function Home() {
-  const [selected, setSelected] = useState(DONE_STEP);
+  const [selected, setSelected] = useState(9);
   const step = STEPS.find((item) => item.id === selected) ?? STEPS[0];
   const related = CHANGES.filter((change) => change.step === selected);
 
@@ -30,7 +30,9 @@ function Home() {
             </h1>
           </div>
           <p className="max-w-56 text-right text-sm text-bone/70">
-            Stufe {DONE_STEP} steht. Nächster Lauf {NEXT_RUN_LABEL}.
+            {NEXT_STEP === null
+              ? `Zehn Stufen stehen. Nächster Lauf: ${NEXT_RUN_LABEL}.`
+              : `Stufe ${DONE_STEP} steht. Nächster Lauf ${NEXT_RUN_LABEL}.`}
           </p>
         </header>
 
@@ -83,12 +85,15 @@ function Home() {
           <div className="flex items-center gap-2 text-sm">
             <Radio className="text-filament size-4" aria-hidden="true" />
             <span>
-              Stufe {DONE_STEP} steht. Als Nächstes Stufe {NEXT_STEP}.
+              {NEXT_STEP === null
+                ? "Zehn Stufen stehen. Keine Stufe ist offen."
+                : `Stufe ${DONE_STEP} steht. Als Nächstes Stufe ${NEXT_STEP}.`}
             </span>
           </div>
           <p className="mt-2 text-sm leading-relaxed text-bone/70">
-            Die Sperre ist geprüft, das Gedächtnis liegt schon. Stufe {NEXT_STEP} wartet
-            auf einen kürzeren ersten Satz. Die Satzmelodie bleibt ausgesetzt.
+            {NEXT_STEP === null
+              ? "Der kürzere erste Satz steht: höchstens acht Wörter, danach 320 Millisekunden, bei Leo einmal [pause]. Die Sperre war schon geprüft. Die Satzmelodie bleibt ausgesetzt. Als Nächstes die Mundöffnung gegen den Atem, nur über die Viseme-Stärke. Das ist der Stundenschritt, keine neue Stufe."
+              : `Die Sperre ist geprüft. Stufe ${NEXT_STEP} ist der nächste Lauf. Die Satzmelodie bleibt ausgesetzt.`}
           </p>
         </div>
 
@@ -134,10 +139,13 @@ function Home() {
             );
           })}
         </ol>
+        <p className="px-3 text-xs leading-relaxed text-bone/55">
+          Satzmelodie bleibt ausgesetzt. Sie ist keine eigene Stufe.
+        </p>
 
         <ul className="space-y-2">
           <LinkRow name="Kushim" note="KI-Assistent" live />
-          <LinkRow name="Trainingsprogramm" note="Zehn Stufen, stündlich eine" live />
+          <LinkRow name="Trainingsprogramm" note="Zehn Stufen sind fertig" live />
           <LinkRow name="Diese Seite" note="Zeigt Stand und Änderungen" live />
         </ul>
 
