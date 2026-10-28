@@ -197,19 +197,36 @@ export const CHANGES: Change[] = [
     body: "Liegt der Sprechbus still, bleibt die Lippe auf Skala 1 und der Kiefer auf der Ruhe, Frame für Frame gleich, auch länger als die erste Pause. Das gilt in der Pause nach dem ersten Satz: der Bus ist still, die Pose darf noch sprechen, und die alten Viseme-Rahmen spielen nicht noch einmal. Die nächste Zeile öffnet den Mund wieder. Ein Abbruch setzt die Ruhe. Bei Leo hält [pause] den Bus aktiv; die Länge steht nicht in den Samples, deshalb kein geratenes Schweigen. Blick, Sperre und Bildzeit bleiben unangetastet. Die Pause bleibt 320 Millisekunden. Die Form ist nicht nachgezogen. Gemessen. Das war der Stundenschritt, keine eigene Stufe. Die Satzmelodie bleibt ausgesetzt.",
     source: "Laufende App",
   },
+  {
+    id: "shape-reply",
+    time: "08:00",
+    step: null,
+    title: "Antwortform",
+    body: "Die Antwortform hat einen Pfad: shapeReply, einmal auf dem Rohtext, vor Anzeige und Stimme. Server und Ersatz liefern Rohtext. Ein zweiter Durchlauf ändert die Wörter nicht. Eine Frage nach dem Namen wird hier nicht gestrichen. Aussehen, Sperre und die Pause von 320 Millisekunden bleiben unberührt. Das ist keine eigene Stufe. Die Satzmelodie bleibt ausgesetzt.",
+    source: "Laufende App",
+  },
+  {
+    id: "lock-reread",
+    time: "08:00",
+    step: null,
+    title: "Lock erneut gelesen",
+    body: "Die Sperre ist in Stunde 8 erneut gelesen. Dieselbe Prüfung wirft weiter. Zusätzlich fallen ein ausgetauschter Shader oder eine andere Geometrie, ein umgehängtes oder ausgeblendetes Teil, eine seitliche oder kopfüber stehende Kamera und ein Raum, der den Void zudeckt. Die Vergleichstabelle ist eingefroren. Die Figur und lock.ts sind unverändert. Die Pause bleibt 320 Millisekunden. Das war der Stundenschritt, keine eigene Stufe. Die Satzmelodie bleibt ausgesetzt.",
+    source: "Laufende App",
+  },
 ];
 
 /**
- * Steps 1–10 stay done. Mouth-against-breath and Bildzeit stay in.
- * Idle mouth is hourly step 8, not an eleventh stage: while the speech bus
- * is idle the lip stays at scale 1 and the jaw stays at rest, including the
- * pause after the first sentence and while the speak pose is still set.
- * Stale viseme frames are not replayed. Look, the lock, frame time, and the
- * 320 ms pause are untouched. The shape was not retuned. Sentence melody
- * stays deferred.
- * NEXT_STEP is null. The next run is hour 9 at 09:00 and only reads the lock
- * check. This page does not mark that read done, and it does not mark a
- * shapeReply pass done.
+ * Steps 1–10 stay done. Idle mouth, gaze, frame time, and the 320 ms pause
+ * stay as already recorded. shapeReply is the one reply-form path, before
+ * display and voice; appearance, the lock, and the pause are untouched there.
+ * The lock re-read is hourly step 8, not an eleventh stage: the same check
+ * still throws, and it also fails on a swapped shader or geometry, a
+ * reparented or hidden part, a yawed or upside-down camera, and a scene that
+ * covers the void. The comparison table is frozen. The figure and lock.ts
+ * are unchanged. Sentence melody stays deferred.
+ * NEXT_STEP is null. Hour 9 at 09:00 is the next pipeline run, the
+ * Stabilitätscheck (pico2 HOURLY_NEXT is 9 and NEXT_RUN_LABEL is 09:00).
+ * This page does not mark that hour done.
  * statusOf checks NEXT_STEP first, so a later open number is not marked done.
  */
 export const DONE_STEP = 10;
@@ -217,8 +234,8 @@ export const NEXT_STEP: number | null = null;
 export const HOURLY_DONE = 8;
 export const HOURLY_NEXT = 9;
 export const NEXT_RUN_HOUR = "09:00";
-export const NEXT_RUN_LABEL = "Lock-Check nur lesen";
-export const NEXT_RUN_NOTE = `Mund in der Ruhe, Stunde ${HOURLY_DONE}, steht. Solange der Sprechbus still ist, bleibt die Lippe auf Skala 1 und der Kiefer auf der Ruhe, auch in der Pause nach dem ersten Satz und während die Pose noch spricht. Blick, Sperre und Bildzeit bleiben unangetastet. Die Pause bleibt 320 Millisekunden. Die Satzmelodie bleibt ausgesetzt. Stunde ${HOURLY_NEXT}, ${NEXT_RUN_HOUR}, liest den Lock-Check nur. Das ist noch nicht gelaufen.`;
+export const NEXT_RUN_LABEL = "Stabilitätscheck";
+export const NEXT_RUN_NOTE = `Die Sperre ist in Stunde ${HOURLY_DONE} erneut gelesen. Dieselbe Prüfung wirft weiter. Zusätzlich fallen ein ausgetauschter Shader oder eine andere Geometrie, ein umgehängtes oder ausgeblendetes Teil, eine seitliche oder kopfüber stehende Kamera und ein Raum, der den Void zudeckt. Die Figur und lock.ts sind unverändert. Die Pause bleibt 320 Millisekunden. Die Antwortform hat einen Pfad: shapeReply, einmal vor Anzeige und Stimme. Aussehen, Sperre und diese Pause bleiben dort unberührt. Die zehn Stufen bleiben erledigt. Die Satzmelodie bleibt ausgesetzt. Stunde ${HOURLY_NEXT}, ${NEXT_RUN_HOUR}, ist der Stabilitätscheck. Das ist noch nicht gelaufen.`;
 
 export function statusOf(id: number): "done" | "next" | "open" {
   if (NEXT_STEP !== null && id === NEXT_STEP) return "next";

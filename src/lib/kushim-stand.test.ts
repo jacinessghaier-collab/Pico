@@ -13,7 +13,7 @@ import {
   statusOf,
 } from "./kushim-stand.ts";
 
-describe("kushim stand after the idle mouth", () => {
+describe("kushim stand after the lock re-read", () => {
   it("keeps ten steps and marks every one done", () => {
     assert.deepEqual(
       STEPS.map((step) => step.id),
@@ -116,17 +116,71 @@ describe("kushim stand after the idle mouth", () => {
     );
   });
 
-  it("keeps the lock-check read as the next hour", () => {
+  it("notes shapeReply as the reply-form path, not a stage or an hour", () => {
+    const landed = CHANGES.find((change) => change.id === "shape-reply");
+    assert.ok(landed);
+    assert.equal(landed.step, null);
+    assert.match(landed.title, /Antwortform/);
+    assert.match(landed.body, /shapeReply/);
+    assert.match(landed.body, /einmal auf dem Rohtext/);
+    assert.match(landed.body, /vor Anzeige und Stimme/);
+    assert.match(landed.body, /zweiter Durchlauf ändert die Wörter nicht/);
+    assert.match(landed.body, /Frage nach dem Namen wird hier nicht gestrichen/);
+    assert.match(landed.body, /Aussehen, Sperre und die Pause von 320 Millisekunden/);
+    assert.match(landed.body, /keine eigene Stufe/);
+    assert.match(landed.body, /Satzmelodie bleibt ausgesetzt/);
+    assert.doesNotMatch(landed.body, /Stunde 8|Stunde 9|09:00|Stundenschritt/);
+    assert.doesNotMatch(landed.title, /Stufe 11|elfte Stufe/);
+    assert.equal(
+      STEPS.some((step) => /shapeReply|Antwortform/.test(step.title)),
+      false,
+    );
+  });
+
+  it("records the lock re-read as hour 8, not a new stage", () => {
+    const landed = CHANGES.find((change) => change.id === "lock-reread");
+    assert.ok(landed);
+    assert.equal(landed.step, null);
+    assert.equal(landed.time, "08:00");
+    assert.match(landed.title, /Lock erneut gelesen/);
+    assert.match(landed.body, /Stunde 8/);
+    assert.match(landed.body, /Dieselbe Prüfung wirft weiter/);
+    assert.match(landed.body, /Shader/);
+    assert.match(landed.body, /Geometrie/);
+    assert.match(landed.body, /umgehängtes oder ausgeblendetes Teil/);
+    assert.match(landed.body, /seitliche oder kopfüber stehende Kamera/);
+    assert.match(landed.body, /Void/);
+    assert.match(landed.body, /Vergleichstabelle ist eingefroren/);
+    assert.match(landed.body, /Figur und lock\.ts sind unverändert/);
+    assert.match(landed.body, /320 Millisekunden/);
+    assert.match(landed.body, /keine eigene Stufe/);
+    assert.match(landed.body, /Satzmelodie bleibt ausgesetzt/);
+    assert.doesNotMatch(landed.body, /Stunde 9|09:00|noch nicht/);
+    assert.doesNotMatch(landed.title, /Stufe 11|elfte Stufe/);
+    assert.equal(
+      STEPS.some((step) => step.id > 10 || /erneut gelesen/.test(step.title)),
+      false,
+    );
+  });
+
+  it("names hour 9 at 09:00 as the stability pass and leaves it unrun", () => {
     assert.equal(HOURLY_DONE, 8);
     assert.equal(HOURLY_NEXT, 9);
     assert.equal(NEXT_RUN_HOUR, "09:00");
-    assert.equal(NEXT_RUN_LABEL, "Lock-Check nur lesen");
-    assert.match(NEXT_RUN_NOTE, /Stunde 9, 09:00, liest den Lock-Check nur/);
+    assert.equal(NEXT_RUN_LABEL, "Stabilitätscheck");
+    assert.match(NEXT_RUN_NOTE, /Stunde 8/);
+    assert.match(NEXT_RUN_NOTE, /Stunde 9, 09:00, ist der Stabilitätscheck/);
     assert.match(NEXT_RUN_NOTE, /noch nicht gelaufen/);
+    assert.match(NEXT_RUN_NOTE, /320 Millisekunden/);
+    assert.match(NEXT_RUN_NOTE, /shapeReply/);
+    assert.match(NEXT_RUN_NOTE, /zehn Stufen bleiben erledigt/);
     assert.match(NEXT_RUN_NOTE, /Satzmelodie bleibt ausgesetzt/);
-    assert.doesNotMatch(NEXT_RUN_NOTE, /shapeReply/);
     assert.equal(
-      CHANGES.some((change) => change.time === "09:00" || /shapeReply/.test(change.body)),
+      CHANGES.some((change) => change.time === "09:00"),
+      false,
+    );
+    assert.equal(
+      CHANGES.some((change) => /melodie/i.test(change.title)),
       false,
     );
   });
