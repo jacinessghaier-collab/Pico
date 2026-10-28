@@ -13,7 +13,7 @@ import {
   statusOf,
 } from "./kushim-stand.ts";
 
-describe("kushim stand after the lock re-read", () => {
+describe("kushim stand after the stability hour", () => {
   it("keeps ten steps and marks every one done", () => {
     assert.deepEqual(
       STEPS.map((step) => step.id),
@@ -163,25 +163,116 @@ describe("kushim stand after the lock re-read", () => {
     );
   });
 
-  it("names hour 9 at 09:00 as the stability pass and leaves it unrun", () => {
-    assert.equal(HOURLY_DONE, 8);
-    assert.equal(HOURLY_NEXT, 9);
-    assert.equal(NEXT_RUN_HOUR, "09:00");
-    assert.equal(NEXT_RUN_LABEL, "Stabilitätscheck");
-    assert.match(NEXT_RUN_NOTE, /Stunde 8/);
-    assert.match(NEXT_RUN_NOTE, /Stunde 9, 09:00, ist der Stabilitätscheck/);
-    assert.match(NEXT_RUN_NOTE, /noch nicht gelaufen/);
+  it("records the stability read as hour 9, not a new stage", () => {
+    const landed = CHANGES.find((change) => change.id === "stability-read");
+    assert.ok(landed);
+    assert.equal(landed.step, null);
+    assert.equal(landed.time, "09:00");
+    assert.equal(landed.title, "Stabilitätscheck");
+    assert.match(landed.body, /Stunde 9/);
+    assert.match(landed.body, /zwei Sekunden/);
+    assert.match(landed.body, /Trainingsstunden 0 bis 8/);
+    assert.match(landed.body, /zwanzig Sekunden auf Stunde 8/);
+    assert.match(landed.body, /reduzierter Bewegung/);
+    assert.match(landed.body, /bleibt grün/);
+    assert.match(landed.body, /Kein zweiter Check/);
+    assert.match(landed.body, /kein Post-Pass/);
+    assert.match(landed.body, /kein visueller Eingriff/);
+    assert.match(landed.body, /Figur und lock\.ts sind unverändert/);
+    assert.match(landed.body, /320 Millisekunden/);
+    assert.match(landed.body, /stehen schon/);
+    assert.match(landed.body, /Stundenschritt, keine eigene Stufe/);
+    assert.match(landed.body, /Satzmelodie bleibt ausgesetzt/);
+    assert.doesNotMatch(landed.body, /Stufe 11|elfte Stufe|Stunde 10|noch nicht/);
+    assert.equal(
+      STEPS.some((step) => step.id > 10),
+      false,
+    );
+  });
+
+  it("notes the name word-boundary on the reply path already recorded", () => {
+    const prior = CHANGES.find((change) => change.id === "shape-reply");
+    assert.ok(prior);
+    assert.match(prior.body, /shapeReply/);
+    const landed = CHANGES.find((change) => change.id === "reply-form-name");
+    assert.ok(landed);
+    assert.equal(landed.step, null);
+    assert.equal(landed.time, "09:10");
+    assert.match(landed.title, /Wortgrenze/);
+    assert.match(landed.body, /ohne Ersatzsatz/);
+    assert.match(landed.body, /ganzes Wort/);
+    assert.match(landed.body, /Jacinta/);
+    assert.match(landed.body, /Namen nicht erfragen/);
+    assert.match(landed.body, /Abbruch an der Historie/);
+    assert.match(landed.body, /derselben Funktion/);
+    assert.match(landed.body, /shapeReply steht schon/);
+    assert.match(landed.body, /320 Millisekunden/);
+    assert.match(landed.body, /keine eigene Stufe/);
+    assert.match(landed.body, /Satzmelodie bleibt ausgesetzt/);
+    assert.doesNotMatch(landed.body, /Stunde 9|Stunde 10|09:00|Stundenschritt|Stufe 11/);
+    assert.equal(
+      STEPS.some((step) => /Wortgrenze|Jacinta/.test(step.title)),
+      false,
+    );
+  });
+
+  it("records the last viseme at the text clock, not as the idle-mouth hour", () => {
+    const idle = CHANGES.find((change) => change.id === "mouth-rest");
+    assert.ok(idle);
+    assert.match(idle.title, /Mund in der Ruhe/);
+    const landed = CHANGES.find((change) => change.id === "viseme-clock");
+    assert.ok(landed);
+    assert.equal(landed.step, null);
+    assert.equal(landed.time, "09:20");
+    assert.equal(landed.title, "Visem am Texttakt");
+    assert.match(landed.body, /derselben Ruhe/);
+    assert.match(landed.body, /onend/);
+    assert.match(landed.body, /\baa\b/);
+    assert.match(landed.body, /Kein Ausblenden/);
+    assert.match(landed.body, /keine zweite Uhr/);
+    assert.match(landed.body, /kürzer sein als die Stimme/);
+    assert.match(landed.body, /Mund in der Ruhe steht schon/);
+    assert.match(landed.body, /320 Millisekunden/);
+    assert.match(landed.body, /keine eigene Stufe/);
+    assert.match(landed.body, /Satzmelodie bleibt ausgesetzt/);
+    assert.doesNotMatch(landed.body, /Stunde 9|Stunde 10|Stundenschritt|Stufe 11/);
+    assert.equal(
+      STEPS.some((step) => /Texttakt|Visem/.test(step.title)),
+      false,
+    );
+  });
+
+  it("names hour 10 at 10:00 as the next run and leaves it unrun", () => {
+    assert.equal(HOURLY_DONE, 9);
+    assert.equal(HOURLY_NEXT, 10);
+    assert.equal(NEXT_RUN_HOUR, "10:00");
+    assert.equal(NEXT_RUN_LABEL, "10:00");
+    assert.match(NEXT_RUN_NOTE, /Stabilitätscheck ist in Stunde 9, 09:00, gelaufen/);
+    assert.match(NEXT_RUN_NOTE, /zwei Sekunden/);
+    assert.match(NEXT_RUN_NOTE, /bleibt grün/);
+    assert.match(NEXT_RUN_NOTE, /Kein zweiter Check/);
+    assert.match(NEXT_RUN_NOTE, /lock\.ts sind unverändert/);
     assert.match(NEXT_RUN_NOTE, /320 Millisekunden/);
+    assert.match(NEXT_RUN_NOTE, /Mund in der Ruhe/);
     assert.match(NEXT_RUN_NOTE, /shapeReply/);
+    assert.match(NEXT_RUN_NOTE, /Stunde 8 stehen schon/);
+    assert.match(NEXT_RUN_NOTE, /ganzes Wort/);
+    assert.match(NEXT_RUN_NOTE, /Texttakt/);
     assert.match(NEXT_RUN_NOTE, /zehn Stufen bleiben erledigt/);
     assert.match(NEXT_RUN_NOTE, /Satzmelodie bleibt ausgesetzt/);
+    assert.match(NEXT_RUN_NOTE, /Stunde 10, 10:00, ist der nächste Lauf/);
+    assert.match(NEXT_RUN_NOTE, /noch nicht gelaufen/);
     assert.equal(
-      CHANGES.some((change) => change.time === "09:00"),
+      CHANGES.some((change) => change.time === "10:00"),
       false,
     );
     assert.equal(
       CHANGES.some((change) => /melodie/i.test(change.title)),
       false,
+    );
+    assert.equal(
+      CHANGES.filter((change) => change.title === "Stabilitätscheck").length,
+      1,
     );
   });
 });
