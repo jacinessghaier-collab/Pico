@@ -181,24 +181,33 @@ export const CHANGES: Change[] = [
     body: "Die Lautstärke setzt die Viseme-Stärke, von der Schwelle 0,35 bis 1. Das Einatmen nimmt sechs Prozent weg, das Ausatmen bleibt bei der Lautstärke. Der eigene Sinus auf aa ist weg. Geteilt wird die Öffnung durch die Brustskala, die ruhende Lippe bleibt bei 1. Die Skala kommt aus dem Atem der Sperre. Brusttempo bleibt 1,35 beim Sprechen, 0,55 beim Mitfühlen und 0,85 in der Ruhe. Sperre und Sperr-Check sind unverändert. Das war der Stundenschritt, keine eigene Stufe. Die Satzmelodie bleibt ausgesetzt.",
     source: "Laufende App",
   },
+  {
+    id: "frame-time",
+    time: "07:00",
+    step: null,
+    title: "Bildzeit",
+    body: "Die laufende Szene misst die Bildzeit vor der 50-ms-Klemme der Bewegung. Der Schalter „Bildzeit“ steht unter der Kopfzeile, aus ist der Normalzustand. Er zeigt das Mittel über 60 Frames, die Bilder pro Sekunde und die Spitze. Die Zeile liegt im DOM. Kein Bloom, keine zweite Aura, kein neues Material. Die Sperre bleibt unberührt. Die erste Pause bleibt 320 Millisekunden. Die Satzmelodie bleibt ausgesetzt. Das war der Stundenschritt, keine eigene Stufe.",
+    source: "Laufende App",
+  },
 ];
 
 /**
- * Steps 1–10 stay done. The shorter first sentence is in. Mouth opening against
- * the breath is the finished hourly step, not an eleventh stage: loudness sets
- * viseme strength, the inhale eases it by 6%, there is no aa sine, and the
- * opening is divided by the chest scale from the lock's breath. lock.ts and
- * lock-check.ts are untouched. Sentence melody stays deferred.
- * NEXT_STEP is null. The next run is frame time of the live scene, and this
- * page does not mark that done. FIRST_PAUSE_MS moves only if that one pause
- * is wrong — optional, and not the primary next.
+ * Steps 1–10 stay done. The shorter first sentence and mouth-against-breath
+ * are in. Bildzeit is hourly step 7, not an eleventh stage: the toggle under
+ * the header is off by default and shows the 60-frame mean, frames per second,
+ * and the peak, in the DOM only. No bloom, second aura, or new material. The
+ * lock and the 320 ms pause stay. Sentence melody stays deferred.
+ * NEXT_STEP is null. The next run is hour 8 at 08:00 and only reads the lock
+ * check. This page does not mark that read done.
  * statusOf checks NEXT_STEP first, so a later open number is not marked done.
  */
 export const DONE_STEP = 10;
 export const NEXT_STEP: number | null = null;
-export const NEXT_RUN_LABEL = "Bildzeit der laufenden Szene";
-export const NEXT_RUN_NOTE =
-  "Mundöffnung gegen den Atem steht: die Lautstärke setzt die Viseme-Stärke, das Einatmen nimmt sechs Prozent weg, der Sinus auf aa ist weg, die Öffnung ist durch die Brustskala aus der Sperre geteilt. Sperre und Sperr-Check sind unverändert. Die Satzmelodie bleibt ausgesetzt. Der nächste Lauf ist die Bildzeit der laufenden Szene. Die eine Pause bleibt bei 320 Millisekunden und wird nur geändert, wenn sie falsch liegt.";
+export const HOURLY_DONE = 7;
+export const HOURLY_NEXT = 8;
+export const NEXT_RUN_HOUR = "08:00";
+export const NEXT_RUN_LABEL = "Lock-Check nur lesen";
+export const NEXT_RUN_NOTE = `Bildzeit, Stunde ${HOURLY_DONE}, ist gemessen. Der Schalter steht unter der Kopfzeile und ist aus dem Normalzustand. Er zeigt das Mittel über 60 Frames, die Bilder pro Sekunde und die Spitze. Die Zeile liegt im DOM. Kein Bloom, keine zweite Aura, kein neues Material. Die Sperre bleibt unberührt. Die Pause bleibt 320 Millisekunden. Die Satzmelodie bleibt ausgesetzt. Stunde ${HOURLY_NEXT}, ${NEXT_RUN_HOUR}, liest den Lock-Check nur. Das ist noch nicht gelaufen.`;
 
 export function statusOf(id: number): "done" | "next" | "open" {
   if (NEXT_STEP !== null && id === NEXT_STEP) return "next";
